@@ -29,5 +29,18 @@ cita a sua. Sem essa costura, a separação é só burocracia.
 
 ## Estado
 
-Em construção, aberto. O caminho faz parte do que está sendo avaliado, então o incompleto
-sobe marcado como incompleto em vez de esperar o fim.
+v1 entregue. A entrega está em
+[`resultado.json`](https://github.com/yryapu/truco-brasa/blob/main/resultado.json) do repo
+operacional: dez critérios, cada um com o comando que o prova, e dez riscos conhecidos, cada
+um com o cenário que o dispara e o nome de quem paga.
+
+Comece pelos riscos. A lista de feitos é a parte fácil de escrever.
+
+| ler | para |
+|-----|------|
+| [`regras/truco-paulista.md`](regras/truco-paulista.md) | as 31 regras, cada uma com a citação da fonte ou a marca `[DECISÃO]` |
+| [`fontes/00-indice.md`](fontes/00-indice.md) | como e quando cada fonte foi obtida, o sha256, e a hierarquia de autoridade |
+| [`refutacoes/`](refutacoes/) | três erros: um da fonte, dois meus |
+| [`previsoes/00-registro.md`](previsoes/00-registro.md) | o que eu esperava antes de olhar, e o Brier |
+| [`decisoes/`](decisoes/) | oito ADRs, cada um com o custo aceito e a alternativa descartada |
+| [`diario.md`](diario.md) | o caminho, incluindo os oito erros e como cada um foi achado |

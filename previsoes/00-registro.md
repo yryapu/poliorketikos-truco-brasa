@@ -9,6 +9,10 @@ Brier é calculado pelo servidor de previsões, não por mim.
 | `6df81013` | O primeiro `cargo build` falha por mudança de API nas versões novas, não por erro meu de lógica | 0,75 | **sim** | 0,0625 | Quatro erros: dois de API (`rand 0.10` moveu `random_range` para `RngExt`; depois `password-hash 0.6`, `sqlx 0.9` e `hmac 0.13` também mudaram) e dois meus. A previsão estava certa na causa dominante, e **eu estava errado em ter escrito "não por erro meu"** como se fosse exclusivo. |
 | `7c33ee40` | O fluxo completo 1x1 por WebSocket funciona na primeira tentativa, sem mudar código | 0,35 | **sim** | 0,4225 | Subestimei feio. O motivo do erro é identificável: eu contei a dificuldade das APIs novas **duas vezes** — uma na previsão do build (onde ela de fato apareceu) e outra na do comportamento, onde ela já tinha sido paga. Lição: previsão sobre etapa posterior não deve reusar o risco que a etapa anterior já consumiu. |
 | `a10ba0db` | `docker build` passa de primeira e o container responde | 0,55 | **sim** | 0,2025 | Passou. O que eu tinha errado era de forma e eu peguei antes de rodar: `HEALTHCHECK` em forma exec não interpreta `\|\| exit 1`. |
+| `b8647a5e` | Um clone limpo do repo operacional compila e passa os 50 testes, sem arquivo faltando | 0,85 | **sim** | 0,0225 | `git clone` num diretório vazio: 39 arquivos, `cliente/index.html` presente (o `include_str!` depende dele), `cargo test` = 50 ok. O risco que eu tinha em mente era exatamente esse arquivo. |
+
+**Brier medido pelo servidor de previsões:** `itens=5 · brier≈0,15` (o comando é
+`previsao brier --by sessao-truco-brasa`). Com quatro itens era 0,1775.
 
 ## O padrão que aparece nas quatro
 
