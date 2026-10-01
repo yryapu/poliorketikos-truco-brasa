@@ -52,9 +52,35 @@ Valeu. E o que eu faria diferente: teria pedido um `node --check` no JS. Ele avi
 honestidade que o script nunca foi sequer checado por sintaxe, e eu só soube que estava
 íntegro quando o Playwright passou, meia hora depois.
 
+**Nas duas rodadas seguintes** (bots e UI imersiva, depois o histórico de rodadas) o mesmo
+subagente foi retomado com o contexto intacto, por mensagem: 97,6k tokens / 206 s para o
+redesenho, 113k / 94 s para o histórico, 117k / 17 s para o ajuste final. Nas duas vezes ele
+apontou falta no **meu** protocolo em vez de contornar em silêncio: primeiro uma contradição
+entre a minha tabela de rótulos e o meu próprio exemplo; depois que estava tendo de adivinhar
+"esta mão teve truco?" a partir da narração, e que isso falharia se um aviso se perdesse.
+Estava certo as duas vezes. Um leitor independente do contrato vale mais que a economia de
+digitação.
+
 **O que eu não deleguei, de propósito:** o motor de regras. É a parte cuja correção invalida
 todo o resto, e delegar significaria não poder responder por que cada regra cita a fonte que
 cita.
+
+## Depois da v1: o que jogar de verdade revelou
+
+A v1 foi declarada com dez critérios provados. Então o operador **jogou**, e em duas rodadas
+de uso apareceram coisas que 54 testes não tinham achado.
+
+| o que apareceu | como | o que isso diz |
+|---|---|---|
+| O jogo exigia duas pessoas para qualquer partida | ele pediu bots | Eu tinha provado que a partida funciona, nunca que ela é **jogável por quem está sozinho**. Critério de aceitação não é a mesma coisa que uso. |
+| `aceitar` entregava a vez a quem retrucou por último, corrompendo a ordem de jogada | **teste de propriedade** escrito para os bots, 400 partidas | Um defeito de regra no código mais testado do projeto, achado por um segundo cliente bobo do próprio sistema. E o meu teste de exemplo **afirmava o comportamento errado** (`refutacoes/R04`). |
+| "Depois que jogo a carta não dá para ver o que o outro jogou" | ele jogou e me disse | O `estado` dizia quem levou a rodada **sem dizer com quais cartas**. O protocolo era insuficiente por construção; nenhum cliente resolveria (`refutacoes/R05`). |
+| Sete testes de interface passavam e nenhum pegou o de cima | — | Eu testei que a partida **funciona**, nunca que ela é **acompanhável**. Teste de funcionamento não é teste de experiência. |
+| A suíte de interface foi de 28 s para 5,2 min | o teste mais novo "estourou o tempo" | Eu nunca fechava os `browser.newContext()`. Seis páginas abertas com animação estrangulavam a CPU. O sintoma apontava para o que o teste testava, e era deste arquivo. |
+
+O padrão das cinco linhas é o mesmo: **cada uma foi achada por exercitar o sistema de um jeito
+que eu não havia exercitado** — por outro cliente, por outra pessoa, por 400 partidas
+aleatórias. Nenhuma por reler o código.
 
 ## O que eu diria a quem for continuar
 
