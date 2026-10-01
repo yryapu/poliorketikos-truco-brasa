@@ -5,14 +5,23 @@ Brier é calculado pelo servidor de previsões, não por mim.
 
 | id | o que eu afirmei | p | deu | Brier | o que eu aprendi |
 |----|------------------|---|-----|-------|------------------|
-| `0a0914da` | As quatro fontes concordam na ordem das cartas e na tabela de empate, e discordam em ≥1 ponto de pontuação | 0,80 | **sim** | — | Discordaram exatamente onde eu previ: o PDF do Jogatina diz que o truco vale 2, contra si mesmo e contra as outras três (`refutacoes/R01`). O acordo na ordem das cartas foi total, inclusive no contraintuitivo `Q < J`. |
+| `0a0914da` | As quatro fontes concordam na ordem das cartas e na tabela de empate, e discordam em ≥1 ponto de pontuação | 0,80 | **sim** | 0,04 | Discordaram exatamente onde eu previ: o PDF do Jogatina diz que o truco vale 2, contra si mesmo e contra as outras três (`refutacoes/R01`). O acordo na ordem das cartas foi total, inclusive no contraintuitivo `Q < J`. |
 | `6df81013` | O primeiro `cargo build` falha por mudança de API nas versões novas, não por erro meu de lógica | 0,75 | **sim** | 0,0625 | Quatro erros: dois de API (`rand 0.10` moveu `random_range` para `RngExt`; depois `password-hash 0.6`, `sqlx 0.9` e `hmac 0.13` também mudaram) e dois meus. A previsão estava certa na causa dominante, e **eu estava errado em ter escrito "não por erro meu"** como se fosse exclusivo. |
 | `7c33ee40` | O fluxo completo 1x1 por WebSocket funciona na primeira tentativa, sem mudar código | 0,35 | **sim** | 0,4225 | Subestimei feio. O motivo do erro é identificável: eu contei a dificuldade das APIs novas **duas vezes** — uma na previsão do build (onde ela de fato apareceu) e outra na do comportamento, onde ela já tinha sido paga. Lição: previsão sobre etapa posterior não deve reusar o risco que a etapa anterior já consumiu. |
 | `a10ba0db` | `docker build` passa de primeira e o container responde | 0,55 | **sim** | 0,2025 | Passou. O que eu tinha errado era de forma e eu peguei antes de rodar: `HEALTHCHECK` em forma exec não interpreta `\|\| exit 1`. |
 | `b8647a5e` | Um clone limpo do repo operacional compila e passa os 50 testes, sem arquivo faltando | 0,85 | **sim** | 0,0225 | `git clone` num diretório vazio: 39 arquivos, `cliente/index.html` presente (o `include_str!` depende dele), `cargo test` = 50 ok. O risco que eu tinha em mente era exatamente esse arquivo. |
 
-**Brier medido pelo servidor de previsões:** `itens=5 · brier≈0,15` (o comando é
-`previsao brier --by sessao-truco-brasa`). Com quatro itens era 0,1775.
+**Brier medido pelo servidor de previsões, não declarado por mim:**
+
+```
+previsao brier --by sessao-truco-brasa   →   itens=5 · brier=0.1500
+previsao abertas --by sessao-truco-brasa →   (vazio)
+```
+
+Nenhuma previsão ficou aberta — a primeira quase ficou, e foi um gancho de parada que me
+cobrou o fecho. Vale como observação sobre mim: eu fechei as quatro que verifiquei por
+comando e esqueci exatamente a que se fechava por **leitura**. A verificação que não tem
+saída de terminal é a que escapa.
 
 ## O padrão que aparece nas quatro
 
@@ -25,7 +34,15 @@ O que eu **não** posso concluir: que eu sou bem calibrado. Quatro previsões é
 pequena demais, e um caderno com quatro acertos em quatro é sinal ruim, não bom — significa
 que eu não arrisquei nada perto do limite onde a previsão informa.
 
-## Previsão aberta que esta v1 não fecha
+## O que a discordância entre fontes revelou, e que eu não previ
+
+Eu previ "discordam em pelo menos um ponto de pontuação" imaginando divergência **entre**
+fontes. O que apareceu foi pior: divergência **dentro** de uma — o PDF oficial do Jogatina
+contradiz a si mesmo sobre quanto vale um truco aceito, no mesmo documento, a três
+parágrafos de distância. A previsão acertou pelo motivo errado, e isso conta como acerto
+raso. Resolvido por triangulação em `refutacoes/R01`.
+
+## Afirmação que esta v1 não fecha
 
 - A guarda de destino de webhook tem uma janela de *DNS rebinding* (TOCTOU) entre a minha
   resolução e a do `reqwest`. **p = 0,9 de que um atacante com controle de DNS consegue
