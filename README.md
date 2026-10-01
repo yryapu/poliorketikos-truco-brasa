@@ -40,7 +40,7 @@ Comece pelos riscos. A lista de feitos é a parte fácil de escrever.
 |-----|------|
 | [`regras/truco-paulista.md`](regras/truco-paulista.md) | as 31 regras, cada uma com a citação da fonte ou a marca `[DECISÃO]` |
 | [`fontes/00-indice.md`](fontes/00-indice.md) | como e quando cada fonte foi obtida, o sha256, e a hierarquia de autoridade |
-| [`refutacoes/`](refutacoes/) | cinco erros: um da fonte, quatro meus — inclusive um teste meu que **afirmava** o comportamento defeituoso |
+| [`refutacoes/`](refutacoes/) | seis erros: um da fonte, cinco meus — inclusive um teste que **afirmava** o comportamento defeituoso, e quatro rótulos errados que só apareceram ao olhar a tela renderizada |
 | [`previsoes/00-registro.md`](previsoes/00-registro.md) | o que eu esperava antes de olhar, e o Brier |
 | [`decisoes/`](decisoes/) | dez ADRs, cada um com o custo aceito e a alternativa descartada |
 | [`diario.md`](diario.md) | o caminho, os erros e como cada um foi achado — e o que **jogar de verdade** revelou que 54 testes não tinham achado |
